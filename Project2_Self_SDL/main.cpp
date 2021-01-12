@@ -74,7 +74,7 @@ void game_loop(GameState& _game_state, SDL_Window* &window)
 {
 	while(_game_state != GameState::EXIT)
 	{
-		SDL_Event evnt = SDL_POLL(_game_state);
+		SDL_POLL(_game_state);
 
 		glClearColor(1.0f, 0.0f, 0.0f, 1.0f);
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
