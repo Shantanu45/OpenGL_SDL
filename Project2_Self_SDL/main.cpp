@@ -30,9 +30,8 @@ int main(int argc, char** argv)
 		return EXIT_FAILURE;
 	}
 
-	SDL_Event (*func)(GameState&) = &cSDL::poll;
 	// main game loop
-	gameLoop->start(_game_state, mainWindow, func);
+	gameLoop->start(_game_state, mainWindow, cSDL::poll);
 	
 	return EXIT_SUCCESS;
 }

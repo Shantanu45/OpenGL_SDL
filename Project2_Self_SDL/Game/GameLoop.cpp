@@ -14,19 +14,3 @@ void GameLoop::start(GameState& _game_state, SDL_Window* &window, SDL_Event(*pol
 		SDL_GL_SwapWindow(window);
 	}
 }
-
-SDL_Event GameLoop::SDL_POLL(GameState& _game_state)
-{
-	SDL_Event evnt;
-	while(SDL_PollEvent(&evnt))
-	{
-		switch (evnt.type)
-		{
-		case SDL_QUIT:
-			_game_state = GameState::EXIT;
-			break;
-		default: break;
-		}
-	}
-	return evnt;
-}
