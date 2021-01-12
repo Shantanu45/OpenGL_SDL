@@ -12,14 +12,16 @@ int main(int argc, char** argv)
 	const int width = 1024;
 	const int height = 768;
 	SDL_Window* mainWindow = nullptr;
+	
 	auto _game_state = GameState::PLAY;
 	cSDL* sdl = new cSDL();
 	cGLEW* glew = new cGLEW();
 	GameLoop* gameLoop = new GameLoop();
+	
 	// Initialize SDL
 	if(sdl->initialize(mainWindow, width, height) == -1)
 		return EXIT_FAILURE;
-
+	
 	// Initialize GLEW 
 	if(glew->initialize(mainWindow, width, height))
 	{
@@ -27,9 +29,10 @@ int main(int argc, char** argv)
 		SDL_Quit();
 		return EXIT_FAILURE;
 	}
-	
+
+	SDL_Event (*func)(GameState&) = &cSDL::poll;
 	// main game loop
-	gameLoop->start(_game_state, mainWindow);
+	gameLoop->start(_game_state, mainWindow, func);
 	
 	return EXIT_SUCCESS;
 }

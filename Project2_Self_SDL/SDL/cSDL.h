@@ -2,6 +2,7 @@
 #include <SDL/SDL.h>
 #include "../GameState.h"
 
+
 class cSDL
 {
 public:
@@ -9,5 +10,5 @@ public:
 	~cSDL() = default;
 
 	int initialize(SDL_Window* &window, int w, int h);
-	SDL_Event poll(GameState& _game_state);
+	static SDL_Event poll(GameState& _game_state);
 };

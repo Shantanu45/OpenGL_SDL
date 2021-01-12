@@ -143,6 +143,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Game\GameLoop.cpp" />
+    <ClCompile Include="Game\MainGame.cpp" />
     <ClCompile Include="GL\cGLEW.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="SDL\cSDL.cpp" />
@@ -150,6 +151,7 @@
   <ItemGroup>
     <ClInclude Include="GameState.h" />
     <ClInclude Include="Game\GameLoop.h" />
+    <ClInclude Include="Game\MainGame.h" />
     <ClInclude Include="GL\cGLEW.h" />
     <ClInclude Include="SDL\cSDL.h" />
   </ItemGroup>
