@@ -4,7 +4,7 @@
 
 #include "GameState.h"
 #include "SDL/cSDL.h"
-#include "GL/cGLEW.h"
+#include "GLEW/cGLEW.h"
 #include "Game/GameLoop.h"
 
 int main(int argc, char** argv)

@@ -144,7 +144,7 @@
   <ItemGroup>
     <ClCompile Include="Game\GameLoop.cpp" />
     <ClCompile Include="Game\MainGame.cpp" />
-    <ClCompile Include="GL\cGLEW.cpp" />
+    <ClCompile Include="GLEW\cGLEW.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="SDL\cSDL.cpp" />
   </ItemGroup>
@@ -152,7 +152,7 @@
     <ClInclude Include="GameState.h" />
     <ClInclude Include="Game\GameLoop.h" />
     <ClInclude Include="Game\MainGame.h" />
-    <ClInclude Include="GL\cGLEW.h" />
+    <ClInclude Include="GLEW\cGLEW.h" />
     <ClInclude Include="SDL\cSDL.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

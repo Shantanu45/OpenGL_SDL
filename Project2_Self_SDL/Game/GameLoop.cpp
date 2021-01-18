@@ -1,6 +1,7 @@
 #include "GameLoop.h"
 #include "GL/glew.h"
-
+#include <iostream>
+#include <string>
 
 void GameLoop::start(GameState& _game_state, SDL_Window* &window, SDL_Event(*poll)(GameState& state))
 {
