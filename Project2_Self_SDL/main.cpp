@@ -2,37 +2,34 @@
 #include <iostream>
 #include <SDL/SDL.h>
 #include <GL/glew.h>
+#include <fstream>
 
 #include "GameState.h"
 #include "SDL/cSDL.h"
 #include "GLEW/cGLEW.h"
+#include <string>
 
 const GLint width = 1024;
 const GLint height = 768;
 
 GLuint VAO, VBO, shader;
 
-// Vertex Shader code
-static const char* vShader = "                                                \n\
-#version 330                                                                  \n\
-                                                                              \n\
-layout (location = 0) in vec3 pos;											  \n\
-                                                                              \n\
-void main()                                                                   \n\
-{                                                                             \n\
-    gl_Position = vec4(0.4 * pos.x, 0.4 * pos.y, pos.z, 1.0);				  \n\
-}";
+void ReadShaders(const char* filePath, std::string& target)
+{
+	std::ifstream stream;
 
-// Fragment Shader
-static const char* fShader = "                                                \n\
-#version 330                                                                  \n\
-                                                                              \n\
-out vec4 colour;                                                               \n\
-                                                                              \n\
-void main()                                                                   \n\
-{                                                                             \n\
-    colour = vec4(1.0, 0.0, 0.0, 1.0);                                         \n\
-}";
+	stream.open(filePath);
+
+	if (stream.is_open())
+	{
+		std::string line;
+		while(!stream.eof())
+		{
+			std::getline(stream, line);
+			target += line + "\n";
+		}
+	}
+}
 
 void CreateTriangle()
 {
@@ -84,7 +81,7 @@ void AddShader(GLuint theProgram, const char* shaderCode, GLenum shaderType)
 	glAttachShader(theProgram, theShader);
 }
 
-void CompileShaders()
+void CompileShaders(std::string vShader, std::string fShader)
 {
 	shader = glCreateProgram();
 
@@ -94,8 +91,8 @@ void CompileShaders()
 		return;
 	}
 
-	AddShader(shader, vShader, GL_VERTEX_SHADER);
-	AddShader(shader, fShader, GL_FRAGMENT_SHADER);
+	AddShader(shader, vShader.c_str(), GL_VERTEX_SHADER);
+	AddShader(shader, fShader.c_str(), GL_FRAGMENT_SHADER);
 
 	GLint result = 0;
 	GLchar eLog[1024] = { 0 };
@@ -140,8 +137,13 @@ int main(int argc, char** argv)
 		return EXIT_FAILURE;
 	}
 
+	std::string vShader = "";
+	std::string fShader = "";
+	ReadShaders("Shaders/shader.vert", vShader);
+	ReadShaders("Shaders/shader.frag", fShader);
+
 	CreateTriangle();
-	CompileShaders();
+	CompileShaders(vShader, fShader);
 
 	while(_game_state != GameState::EXIT)
 	{
