@@ -16,6 +16,7 @@ int cSDL::initialize(SDL_Window* &window, int w, int h)
 	SDL_GL_SetAttribute(SDL_GL_CONTEXT_FLAGS, SDL_GL_CONTEXT_FORWARD_COMPATIBLE_FLAG);
 
 	SDL_GL_SetAttribute(SDL_GL_DOUBLEBUFFER, 1);
+	glewExperimental = GL_TRUE;
 
 	window = SDL_CreateWindow("Game",
 									SDL_WINDOWPOS_CENTERED,
