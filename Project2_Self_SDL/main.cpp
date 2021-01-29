@@ -17,7 +17,7 @@
 const GLint width = 1024;
 const GLint height = 768;
 
-GLuint VAO, VBO, IBO, shader, uniformModel;
+GLuint VAO, VBO, IBO, shader, uniformModel, uniformProjection;
 
 bool direction = true;
 float triOffset = 0.0f;
@@ -61,6 +61,8 @@ int main(int argc, char** argv)
 	CreateTriangle();
 	CompileShaders(vShader, fShader);
 
+	glm::mat4 projection = glm::perspective(45.0f, (GLfloat)width/(GLfloat)height, 0.1f, 100.0f);
+
 	while(_game_state != GameState::EXIT)
 	{
 		auto evnt = sdl->poll(_game_state);
@@ -84,11 +86,12 @@ int main(int argc, char** argv)
 		glUseProgram(shader);
 
 		glm::mat4 model = glm::mat4(1.0f);
-		//model = glm::translate(model, glm::vec3(triOffset, 0.0f, 0.0f));
+		model = glm::translate(model, glm::vec3(0.0f, 0.0f, -2.5f));
 		model = glm::rotate(model, triOffset ,glm::vec3(0.0f, 1.0f, 0.0f));
 		model = glm::scale(model, glm::vec3(0.4f, 0.4f, 1.0f));
 
 		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
+		glUniformMatrix4fv(uniformProjection, 1, GL_FALSE, glm::value_ptr(projection));
 
 		glBindVertexArray(VAO);				// because of VAO, here we don't have to bind VBO and attribarray
 		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, IBO);
@@ -223,4 +226,5 @@ void CompileShaders(std::string vShader, std::string fShader)
 	}
 
 	uniformModel = glGetUniformLocation(shader, "model");	// returns id of 'xMove uniform from shader.vert'
+	uniformProjection = glGetUniformLocation(shader, "projection");	// returns id of 'xMove uniform from shader.vert'
 }
