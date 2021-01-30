@@ -15,13 +15,16 @@
 #include "GLM/gtc/type_ptr.hpp"
 #include "glm/gtx/string_cast.hpp"
 #include "Mesh.h"
+#include "Shader.h"
 
 const GLint width = 1024;
 const GLint height = 768;
 
 std::vector<Mesh*> meshList;
+std::vector<Shader> shaderList;
 
-GLuint shader, uniformModel, uniformProjection;
+std::string vShader = "Shaders/shader.vert";
+std::string fShader = "Shaders/shader.frag";
 
 bool direction = true;
 float triOffset = 0.0f;
@@ -30,9 +33,9 @@ float triIncrement = 0.0005f;
 
 // Declarations
 void ReadShaders(const char* filePath, std::string& target);
-void AddShader(GLuint theProgram, const char* shaderCode, GLenum shaderType);
-void CompileShaders(std::string vShader, std::string fShader);
-void CreateTriangle();
+void CreateObjects();
+void CreateShaders();
+
 
 //main function
 int main(int argc, char** argv)
@@ -57,14 +60,10 @@ int main(int argc, char** argv)
 
 	glEnable(GL_DEPTH_TEST);
 
-	std::string vShader = "";
-	std::string fShader = "";
-	ReadShaders("Shaders/shader.vert", vShader);
-	ReadShaders("Shaders/shader.frag", fShader);
+	CreateObjects();
+	CreateShaders();
 
-	CreateTriangle();
-	CompileShaders(vShader, fShader);
-
+	GLuint uniformProjection = 0, uniformModel = 0;
 	glm::mat4 projection = glm::perspective(45.0f, (GLfloat)width/(GLfloat)height, 0.1f, 100.0f);
 
 	while(_game_state != GameState::EXIT)
@@ -87,7 +86,9 @@ int main(int argc, char** argv)
 		glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-		glUseProgram(shader);
+		shaderList[0].UseShader();
+		uniformModel = shaderList[0].GetModelLoaction();
+		uniformProjection = shaderList[0].GetProjectionLocation();
 
 		glm::mat4 model = glm::mat4(1.0f);
 		model = glm::translate(model, glm::vec3(0.0f, 0.0f, -2.5f));
@@ -107,24 +108,8 @@ int main(int argc, char** argv)
 	return EXIT_SUCCESS;
 }
 
-void ReadShaders(const char* filePath, std::string& target)
-{
-	std::ifstream stream;
 
-	stream.open(filePath);
-
-	if (stream.is_open())
-	{
-		std::string line;
-		while (!stream.eof())
-		{
-			std::getline(stream, line);
-			target += line + "\n";
-		}
-	}
-}
-
-void CreateTriangle()
+void CreateObjects()
 {
 	unsigned int indices[] = {
 		0, 3, 1,
@@ -146,67 +131,27 @@ void CreateTriangle()
 
 }
 
-void AddShader(GLuint theProgram, const char* shaderCode, GLenum shaderType)
+
+void CreateShaders()
 {
-	GLuint theShader = glCreateShader(shaderType);
-
-	const GLchar* theCode[1];
-	theCode[0] = shaderCode;
-
-	GLint codeLength[1];
-	codeLength[0] = strlen(shaderCode);
-
-	glShaderSource(theShader, 1, theCode, codeLength);
-	glCompileShader(theShader);
-
-	GLint result = 0;
-	GLchar eLog[1024] = { 0 };
-
-	glGetShaderiv(theShader, GL_COMPILE_STATUS, &result);
-	if (!result)
-	{
-		glGetShaderInfoLog(theShader, 1024, NULL, eLog);
-		fprintf(stderr, "Error compiling the %d shader: '%s'\n", shaderType, eLog);
-		return;
-	}
-
-	glAttachShader(theProgram, theShader);
+	Shader* shader1 = new Shader();
+	shader1->CreateFromFiles(vShader.c_str(), fShader.c_str());
+	shaderList.emplace_back(*shader1);
 }
 
-void CompileShaders(std::string vShader, std::string fShader)
-{
-	shader = glCreateProgram();
-
-	if (!shader)
-	{
-		printf("Failed to create shader\n");
-		return;
-	}
-
-	AddShader(shader, vShader.c_str(), GL_VERTEX_SHADER);
-	AddShader(shader, fShader.c_str(), GL_FRAGMENT_SHADER);
-
-	GLint result = 0;
-	GLchar eLog[1024] = { 0 };
-
-	glLinkProgram(shader);
-	glGetProgramiv(shader, GL_LINK_STATUS, &result);
-	if (!result)
-	{
-		glGetProgramInfoLog(shader, sizeof(eLog), NULL, eLog);
-		printf("Error linking program: '%s'\n", eLog);
-		return;
-	}
-
-	glValidateProgram(shader);
-	glGetProgramiv(shader, GL_VALIDATE_STATUS, &result);
-	if (!result)
-	{
-		glGetProgramInfoLog(shader, sizeof(eLog), NULL, eLog);
-		printf("Error validating program: '%s'\n", eLog);
-		return;
-	}
-
-	uniformModel = glGetUniformLocation(shader, "model");	// returns id of 'xMove uniform from shader.vert'
-	uniformProjection = glGetUniformLocation(shader, "projection");	// returns id of 'xMove uniform from shader.vert'
-}
+//void ReadShaders(const char* filePath, std::string& target)
+//{
+//	std::ifstream stream;
+//
+//	stream.open(filePath);
+//
+//	if (stream.is_open())
+//	{
+//		std::string line;
+//		while (!stream.eof())
+//		{
+//			std::getline(stream, line);
+//			target += line + "\n";
+//		}
+//	}
+//}

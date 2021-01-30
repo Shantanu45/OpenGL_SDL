@@ -148,6 +148,7 @@
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Mesh.cpp" />
     <ClCompile Include="SDL\cSDL.cpp" />
+    <ClCompile Include="Shader.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="GameState.h" />
@@ -156,6 +157,7 @@
     <ClInclude Include="GLEW\cGLEW.h" />
     <ClInclude Include="Mesh.h" />
     <ClInclude Include="SDL\cSDL.h" />
+    <ClInclude Include="Shader.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Shaders\shader.frag" />
