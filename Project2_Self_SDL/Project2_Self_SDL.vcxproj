@@ -155,6 +155,7 @@
     <ClInclude Include="Game\GameLoop.h" />
     <ClInclude Include="Game\MainGame.h" />
     <ClInclude Include="GLEW\cGLEW.h" />
+    <ClInclude Include="Includes.h" />
     <ClInclude Include="Mesh.h" />
     <ClInclude Include="SDL\cSDL.h" />
     <ClInclude Include="Shader.h" />

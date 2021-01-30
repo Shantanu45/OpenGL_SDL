@@ -1,21 +1,4 @@
-#include <Windows.h>
-#include <iostream>
-#include <SDL/SDL.h>
-#include <GL/glew.h>
-#include <fstream>
-#include <string>
-#include <cmath>
-#include <vector>
-
-#include "GameState.h"
-#include "SDL/cSDL.h"
-#include "GLEW/cGLEW.h"
-#include "GLM/glm.hpp"
-#include "GLM/gtc/matrix_transform.hpp"
-#include "GLM/gtc/type_ptr.hpp"
-#include "glm/gtx/string_cast.hpp"
-#include "Mesh.h"
-#include "Shader.h"
+#include "Includes.h"
 
 const GLint width = 1024;
 const GLint height = 768;
@@ -26,16 +9,9 @@ std::vector<Shader> shaderList;
 std::string vShader = "Shaders/shader.vert";
 std::string fShader = "Shaders/shader.frag";
 
-bool direction = true;
-float triOffset = 0.0f;
-float triMaxoffset = 0.7f;
-float triIncrement = 0.0005f;
-
 // Declarations
-void ReadShaders(const char* filePath, std::string& target);
 void CreateObjects();
 void CreateShaders();
-
 
 //main function
 int main(int argc, char** argv)
@@ -70,19 +46,6 @@ int main(int argc, char** argv)
 	{
 		auto evnt = sdl->poll(_game_state);
 
-		if(direction)
-		{
-			triOffset += triIncrement;
-		}
-		else{
-			triOffset -= triIncrement;
-		}
-
-		//if(abs(triOffset) >= triMaxoffset)
-		//{
-		//	direction = !direction;
-		//}
-
 		glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
@@ -92,7 +55,6 @@ int main(int argc, char** argv)
 
 		glm::mat4 model = glm::mat4(1.0f);
 		model = glm::translate(model, glm::vec3(0.0f, 0.0f, -2.5f));
-		model = glm::rotate(model, triOffset ,glm::vec3(0.0f, 1.0f, 0.0f));
 		model = glm::scale(model, glm::vec3(0.4f, 0.4f, 0.4f));
 
 		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
