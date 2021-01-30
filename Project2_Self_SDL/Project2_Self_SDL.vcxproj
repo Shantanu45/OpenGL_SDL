@@ -146,6 +146,7 @@
     <ClCompile Include="Game\MainGame.cpp" />
     <ClCompile Include="GLEW\cGLEW.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="Mesh.cpp" />
     <ClCompile Include="SDL\cSDL.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -153,6 +154,7 @@
     <ClInclude Include="Game\GameLoop.h" />
     <ClInclude Include="Game\MainGame.h" />
     <ClInclude Include="GLEW\cGLEW.h" />
+    <ClInclude Include="Mesh.h" />
     <ClInclude Include="SDL\cSDL.h" />
   </ItemGroup>
   <ItemGroup>

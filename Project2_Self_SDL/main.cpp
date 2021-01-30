@@ -5,6 +5,7 @@
 #include <fstream>
 #include <string>
 #include <cmath>
+#include <vector>
 
 #include "GameState.h"
 #include "SDL/cSDL.h"
@@ -12,12 +13,15 @@
 #include "GLM/glm.hpp"
 #include "GLM/gtc/matrix_transform.hpp"
 #include "GLM/gtc/type_ptr.hpp"
-#include <glm/gtx/string_cast.hpp>
+#include "glm/gtx/string_cast.hpp"
+#include "Mesh.h"
 
 const GLint width = 1024;
 const GLint height = 768;
 
-GLuint VAO, VBO, IBO, shader, uniformModel, uniformProjection;
+std::vector<Mesh*> meshList;
+
+GLuint shader, uniformModel, uniformProjection;
 
 bool direction = true;
 float triOffset = 0.0f;
@@ -88,19 +92,12 @@ int main(int argc, char** argv)
 		glm::mat4 model = glm::mat4(1.0f);
 		model = glm::translate(model, glm::vec3(0.0f, 0.0f, -2.5f));
 		model = glm::rotate(model, triOffset ,glm::vec3(0.0f, 1.0f, 0.0f));
-		model = glm::scale(model, glm::vec3(0.4f, 0.4f, 1.0f));
+		model = glm::scale(model, glm::vec3(0.4f, 0.4f, 0.4f));
 
 		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
 		glUniformMatrix4fv(uniformProjection, 1, GL_FALSE, glm::value_ptr(projection));
 
-		glBindVertexArray(VAO);				// because of VAO, here we don't have to bind VBO and attribarray
-		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, IBO);
-
-		//glDrawArrays(GL_TRIANGLES, 0, 3);
-		glDrawElements(GL_TRIANGLES, 12, GL_UNSIGNED_INT, 0);
-
-		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
-		glBindVertexArray(0);
+		meshList[0]->RenderMesh();
 		
 		glUseProgram(0);
 
@@ -137,30 +134,15 @@ void CreateTriangle()
 	};
 
 	GLfloat vertices[] = {
-		-1.0f, -1.0f, 0.0f,
+		-1.0f, -1.0f, -0.5f,
 		0.0f, -1.0f, 1.0f,
-		1.0f, -1.0f, 0.0f,
+		1.0f, -1.0f, -0.5f,
 		0.0f, 1.0f, 0.0f
 	};
 
-	glGenVertexArrays(1, &VAO);
-	glBindVertexArray(VAO);
-
-	glGenBuffers(1, &IBO);
-	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, IBO);
-	glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices), indices, GL_STATIC_DRAW);
-
-	glGenBuffers(1, &VBO);
-	glBindBuffer(GL_ARRAY_BUFFER, VBO);
-	glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
-
-	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 0, 0);
-	glEnableVertexAttribArray(0);
-
-	glBindBuffer(GL_ARRAY_BUFFER, 0);
-	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
-
-	glBindVertexArray(0);
+	Mesh *obj1 = new Mesh();
+	obj1->CreateMesh(vertices, indices, 12, 12);
+	meshList.emplace_back(obj1);
 
 }
 
