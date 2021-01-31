@@ -42,7 +42,7 @@ int main(int argc, char** argv)
 
 	CreateObjects();
 	CreateShaders();
-	camera = Camera(glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(0.0f, 1.0f, 0.0f), -90.0f, 0.0f, 5.0f, 0.5f);
+	camera = Camera(glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(0.0f, 1.0f, 0.0f), -90.0f, 0.0f, 0.005f, 0.2f);
 
 	GLuint uniformProjection = 0, uniformModel = 0, uniformView = 0;
 	glm::mat4 projection = glm::perspective(45.0f, (GLfloat)width/(GLfloat)height, 0.1f, 100.0f);
@@ -54,6 +54,7 @@ int main(int argc, char** argv)
 		lastTime = now;
 
 		auto evnt = sdl->poll(_game_state);
+
 		camera.keyControl(evnt, deltaTime);
 		camera.mouseControl(sdl->getRelX(), sdl->getRelY());
 

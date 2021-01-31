@@ -8,7 +8,8 @@ Camera::Camera(glm::vec3 startPosition, glm::vec3 startUp, GLfloat startYaw, GLf
 	position(startPosition), 
 	worldUp(startUp), yaw(startYaw), pitch(startPitch), 
 	front(glm::vec3(0.0f, 0.0f, -1.0f)),
-	moveSpeed(startMoveSpeed), turnSpeed(startTurnSpeed)
+	moveSpeed(startMoveSpeed), turnSpeed(startTurnSpeed),
+	w_pressed(false), a_pressed(false), s_pressed(false), d_pressed(false)
 {
 	update();
 }
@@ -16,22 +17,55 @@ Camera::Camera(glm::vec3 startPosition, glm::vec3 startUp, GLfloat startYaw, GLf
 void Camera::keyControl(SDL_Event& evnt, GLfloat deltaTime)
 {
 	GLfloat velocity = moveSpeed * deltaTime;
-	switch( evnt.key.keysym.sym )
+	if(evnt.type == SDL_KEYDOWN)
 	{
-		case SDLK_w:
-			position += front * velocity;
-			break;
-		case SDLK_s:
-			position -= front * velocity;
-			break;
-		case SDLK_a:
-			position -= right * velocity;
-			break;
-		case SDLK_d:
-			position += right * velocity;
-			break;
-		default: break;
+		std::cout << "PRESS" << std::endl;
+		switch( evnt.key.keysym.sym )
+		{
+			case SDLK_w:
+				w_pressed = true;
+				break;
+			case SDLK_s:
+				s_pressed = true;
+				break;
+			case SDLK_a:
+				a_pressed = true;
+				break;
+			case SDLK_d:
+				d_pressed = true;
+				break;
+			default: break;
+		}
 	}
+	else if(evnt.type == SDL_KEYUP)
+	{
+		std::cout << "RELEASE" << std::endl;
+		switch( evnt.key.keysym.sym )
+		{
+			case SDLK_w:
+				w_pressed = false;
+				break;
+			case SDLK_s:
+				s_pressed = false;
+				break;
+			case SDLK_a:
+				a_pressed = false;
+				break;
+			case SDLK_d:
+				d_pressed = false;
+				break;
+			default: break;
+		}
+	}
+
+	if (w_pressed)
+		position += front * velocity;
+	if (s_pressed)
+		position -= front * velocity;
+	if (a_pressed)
+		position -= right * velocity;
+	if (d_pressed)
+		position += right * velocity;
 }
 
 void Camera::mouseControl(GLfloat xChange, GLfloat yChange)

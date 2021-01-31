@@ -3,6 +3,7 @@
 #include <GL/glew.h>
 #include <GLM/glm.hpp>
 #include <GLM/gtc/matrix_transform.hpp>
+#include <iostream>
 
 #include "SDL/cSDL.h"
 
@@ -28,6 +29,8 @@ private:
 
 	GLfloat moveSpeed;
 	GLfloat turnSpeed;
+
+	bool w_pressed, a_pressed, s_pressed, d_pressed;
 
 	void update();
 };

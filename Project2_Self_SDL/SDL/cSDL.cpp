@@ -27,6 +27,7 @@ int cSDL::initialize(SDL_Window* &window, int w, int h)
 									SDL_WINDOWPOS_CENTERED,
 									w, h, SDL_WINDOW_OPENGL);
 	SDL_ShowCursor(SDL_DISABLE);
+	SDL_SetRelativeMouseMode(SDL_TRUE);
 	return 0;
 }
 
@@ -55,7 +56,8 @@ SDL_Event cSDL::poll(GameState& _game_state)
 				case SDLK_ESCAPE:
 					_game_state = GameState::EXIT;
 					break;
-				default: break;
+				default: 
+					return evnt;
 			}
 
 		default: 
