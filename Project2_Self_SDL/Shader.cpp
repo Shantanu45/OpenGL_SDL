@@ -1,11 +1,7 @@
 #include "Shader.h"
 
-Shader::Shader()
-{
-	shaderID = 0;
-	uniformModel = 0;
-	uniformProjection = 0;
-}
+Shader::Shader() : shaderID(0), uniformModel(0), uniformProjection(0)
+{}
 
 void Shader::CreateFromString(const char* vertexCode, const char* fragmentCode)
 {
@@ -51,6 +47,11 @@ GLuint Shader::GetProjectionLocation()
 GLuint Shader::GetModelLoaction()
 {
 	return uniformModel;
+}
+
+GLuint Shader::GetViewLocation()
+{
+	return uniformView;
 }
 
 void Shader::UseShader()
@@ -107,6 +108,7 @@ void Shader::CompileShader(const char* vertexCode, const char* fragmentCode)
 
 	uniformModel = glGetUniformLocation(shaderID, "model");	// returns id of 'xMove uniform from shader.vert'
 	uniformProjection = glGetUniformLocation(shaderID, "projection");	// returns id of 'xMove uniform from shader.vert'
+	uniformView = glGetUniformLocation(shaderID, "view");
 }
 
 void Shader::AddShader(GLuint theProgram, const char* shaderCode, GLenum shaderType)

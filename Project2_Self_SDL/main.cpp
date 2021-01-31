@@ -5,6 +5,10 @@ const GLint height = 768;
 
 std::vector<Mesh*> meshList;
 std::vector<Shader> shaderList;
+Camera camera;
+
+GLfloat deltaTime = 0.0f;
+GLfloat lastTime = 0.0f;
 
 std::string vShader = "Shaders/shader.vert";
 std::string fShader = "Shaders/shader.frag";
@@ -38,13 +42,20 @@ int main(int argc, char** argv)
 
 	CreateObjects();
 	CreateShaders();
+	camera = Camera(glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(0.0f, 1.0f, 0.0f), -90.0f, 0.0f, 5.0f, 0.5f);
 
-	GLuint uniformProjection = 0, uniformModel = 0;
+	GLuint uniformProjection = 0, uniformModel = 0, uniformView = 0;
 	glm::mat4 projection = glm::perspective(45.0f, (GLfloat)width/(GLfloat)height, 0.1f, 100.0f);
 
 	while(_game_state != GameState::EXIT)
 	{
+		GLfloat now = SDL_GetPerformanceCounter();
+		deltaTime = (now - lastTime)*1000/SDL_GetPerformanceFrequency();
+		lastTime = now;
+
 		auto evnt = sdl->poll(_game_state);
+		camera.keyControl(evnt, deltaTime);
+		camera.mouseControl(sdl->getRelX(), sdl->getRelY());
 
 		glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
@@ -52,6 +63,7 @@ int main(int argc, char** argv)
 		shaderList[0].UseShader();
 		uniformModel = shaderList[0].GetModelLoaction();
 		uniformProjection = shaderList[0].GetProjectionLocation();
+		uniformView = shaderList[0].GetViewLocation();
 
 		glm::mat4 model = glm::mat4(1.0f);
 		model = glm::translate(model, glm::vec3(0.0f, 0.0f, -2.5f));
@@ -59,6 +71,7 @@ int main(int argc, char** argv)
 
 		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
 		glUniformMatrix4fv(uniformProjection, 1, GL_FALSE, glm::value_ptr(projection));
+		glUniformMatrix4fv(uniformView, 1, GL_FALSE, glm::value_ptr(camera.calculateViewMatrix()));
 
 		meshList[0]->RenderMesh();
 		
