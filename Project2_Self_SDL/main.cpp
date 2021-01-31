@@ -19,14 +19,14 @@ int main(int argc, char** argv)
 	SDL_Window* mainWindow = nullptr;
 	
 	auto _game_state = GameState::PLAY;
-	cSDL* sdl = new cSDL();
-	cGLEW* glew = new cGLEW();
 	
 	// Initialize SDL
+	cSDL* sdl = new cSDL();
 	if(sdl->initialize(mainWindow, width, height) == -1)
 		return EXIT_FAILURE;
 	
 	// Initialize GLEW 
+	cGLEW* glew = new cGLEW();
 	if(glew->initialize(mainWindow, width, height))
 	{
 		std::cout << "cannot initialize GLEW or main window in null!";

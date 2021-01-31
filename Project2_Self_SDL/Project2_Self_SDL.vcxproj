@@ -142,8 +142,6 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="Game\GameLoop.cpp" />
-    <ClCompile Include="Game\MainGame.cpp" />
     <ClCompile Include="GLEW\cGLEW.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Mesh.cpp" />
@@ -152,8 +150,6 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="GameState.h" />
-    <ClInclude Include="Game\GameLoop.h" />
-    <ClInclude Include="Game\MainGame.h" />
     <ClInclude Include="GLEW\cGLEW.h" />
     <ClInclude Include="Includes.h" />
     <ClInclude Include="Mesh.h" />

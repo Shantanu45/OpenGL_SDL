@@ -35,6 +35,19 @@ SDL_Event cSDL::poll(GameState& _game_state)
 		case SDL_QUIT:
 			_game_state = GameState::EXIT;
 			break;
+
+		case SDL_MOUSEMOTION:
+			std::cout << evnt.motion.x << " " << evnt.motion.y << std::endl;
+			break;
+
+		case SDL_KEYDOWN:
+			switch( evnt.key.keysym.sym ){
+				case SDLK_ESCAPE:
+					_game_state = GameState::EXIT;
+					break;
+				default: break;
+			}
+
 		default: break;
 		}
 	}
