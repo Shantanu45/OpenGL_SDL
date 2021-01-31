@@ -3,6 +3,10 @@
 #include <GL/glew.h>
 
 
+cSDL::cSDL(): relX(0), relY(0), mouseMove(false)
+{
+}
+
 int cSDL::initialize(SDL_Window* &window, int w, int h)
 {
 	if(SDL_Init(SDL_INIT_EVERYTHING) < 0)
@@ -22,11 +26,15 @@ int cSDL::initialize(SDL_Window* &window, int w, int h)
 									SDL_WINDOWPOS_CENTERED,
 									SDL_WINDOWPOS_CENTERED,
 									w, h, SDL_WINDOW_OPENGL);
+	SDL_ShowCursor(SDL_DISABLE);
 	return 0;
 }
 
 SDL_Event cSDL::poll(GameState& _game_state)
 {
+	mouseMove = false;
+	relX = 0;
+	relY = 0;
 	SDL_Event evnt;
 	while(SDL_PollEvent(&evnt))
 	{
@@ -37,7 +45,9 @@ SDL_Event cSDL::poll(GameState& _game_state)
 			break;
 
 		case SDL_MOUSEMOTION:
-			std::cout << evnt.motion.x << " " << evnt.motion.y << std::endl;
+			mouseMove = true;
+			relX = evnt.motion.xrel;
+			relY = evnt.motion.yrel;
 			break;
 
 		case SDL_KEYDOWN:
@@ -48,8 +58,20 @@ SDL_Event cSDL::poll(GameState& _game_state)
 				default: break;
 			}
 
-		default: break;
+		default: 
+			break;
 		}
 	}
 	return evnt;
 }
+
+GLint cSDL::getRelX()
+{
+	return relX;
+}
+
+GLint cSDL::getRelY()
+{
+	return relY;
+}
+
