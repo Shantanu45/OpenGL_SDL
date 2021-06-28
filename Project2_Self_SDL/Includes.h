@@ -1,5 +1,7 @@
 #pragma once
 
+#define STB_IMAGE_IMPLEMENTATION
+
 #include <Windows.h>
 #include <iostream>
 #include <SDL/SDL.h>
@@ -19,3 +21,4 @@
 #include "Mesh.h"
 #include "Shader.h"
 #include "Camera.h"
+#include "Texture.h"

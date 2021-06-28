@@ -19,7 +19,6 @@ void Camera::keyControl(SDL_Event& evnt, GLfloat deltaTime)
 	GLfloat velocity = moveSpeed * deltaTime;
 	if(evnt.type == SDL_KEYDOWN)
 	{
-		std::cout << "PRESS" << std::endl;
 		switch( evnt.key.keysym.sym )
 		{
 			case SDLK_w:
@@ -39,7 +38,6 @@ void Camera::keyControl(SDL_Event& evnt, GLfloat deltaTime)
 	}
 	else if(evnt.type == SDL_KEYUP)
 	{
-		std::cout << "RELEASE" << std::endl;
 		switch( evnt.key.keysym.sym )
 		{
 			case SDLK_w:

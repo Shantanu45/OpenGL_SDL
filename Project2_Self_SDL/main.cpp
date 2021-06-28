@@ -7,6 +7,9 @@ std::vector<Mesh*> meshList;
 std::vector<Shader> shaderList;
 Camera camera;
 
+Texture brickTexture;
+Texture dirtTexture;
+
 GLfloat deltaTime = 0.0f;
 GLfloat lastTime = 0.0f;
 
@@ -42,7 +45,12 @@ int main(int argc, char** argv)
 
 	CreateObjects();
 	CreateShaders();
-	camera = Camera(glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(0.0f, 1.0f, 0.0f), -90.0f, 0.0f, 0.005f, 0.2f);
+	camera = Camera(glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(0.0f, 1.0f, 0.0f), -90.0f, 0.0f, 0.001f, 0.2f);
+
+	brickTexture = Texture("Textures/brick.png");
+	brickTexture.LoadTexture();
+	dirtTexture = Texture("Textures/dirt.png");
+	dirtTexture.LoadTexture();
 
 	GLuint uniformProjection = 0, uniformModel = 0, uniformView = 0;
 	glm::mat4 projection = glm::perspective(45.0f, (GLfloat)width/(GLfloat)height, 0.1f, 100.0f);
@@ -74,6 +82,8 @@ int main(int argc, char** argv)
 		glUniformMatrix4fv(uniformProjection, 1, GL_FALSE, glm::value_ptr(projection));
 		glUniformMatrix4fv(uniformView, 1, GL_FALSE, glm::value_ptr(camera.calculateViewMatrix()));
 
+		brickTexture.UseTexture();
+
 		meshList[0]->RenderMesh();
 		
 		glUseProgram(0);
@@ -95,14 +105,14 @@ void CreateObjects()
 	};
 
 	GLfloat vertices[] = {
-		-1.0f, -1.0f, -0.5f,
-		0.0f, -1.0f, 1.0f,
-		1.0f, -1.0f, -0.5f,
-		0.0f, 1.0f, 0.0f
+		-1.0f,  -1.0f, -0.5f,  0.0f, 0.0f,
+		 0.0f,  -1.0f,  1.0f,  0.5f, 0.0f,
+		 1.0f,  -1.0f, -0.5f,  1.0f, 0.0f,
+		 0.0f,   1.0f,  0.0f,  0.5f, 1.0f
 	};
 
 	Mesh *obj1 = new Mesh();
-	obj1->CreateMesh(vertices, indices, 12, 12);
+	obj1->CreateMesh(vertices, indices, 20, 12);
 	meshList.emplace_back(obj1);
 
 }

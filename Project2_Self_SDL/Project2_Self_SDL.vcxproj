@@ -148,6 +148,7 @@
     <ClCompile Include="Mesh.cpp" />
     <ClCompile Include="SDL\cSDL.cpp" />
     <ClCompile Include="Shader.cpp" />
+    <ClCompile Include="Texture.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Camera.h" />
@@ -157,6 +158,8 @@
     <ClInclude Include="Mesh.h" />
     <ClInclude Include="SDL\cSDL.h" />
     <ClInclude Include="Shader.h" />
+    <ClInclude Include="stb_image.h" />
+    <ClInclude Include="Texture.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Shaders\shader.frag" />
